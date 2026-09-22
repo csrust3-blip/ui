@@ -866,17 +866,21 @@ function OrionLib:MakeWindow(WindowConfig)
 					AddThemeObject(MakeElement("Stroke"), "Stroke")
 				}), "Second")
 
-				AddConnection(ParagraphFrame.Content:GetPropertyChangedSignal("Text"), function()
-					ParagraphFrame.Content.Size = UDim2.new(1, -24, 0, ParagraphFrame.Content.TextBounds.Y)
-					ParagraphFrame.Size = UDim2.new(1, 0, 0, ParagraphFrame.Content.TextBounds.Y + 35)
-				end)
+			
+                local ContentLabel = ParagraphFrame:FindFirstChild("Content")
 
-				ParagraphFrame.Content.Text = Content
+                AddConnection(ContentLabel:GetPropertyChangedSignal("Text"), function()
+                    ContentLabel.Size = UDim2.new(1, -24, 0, ContentLabel.TextBounds.Y)
+                    ParagraphFrame.Size = UDim2.new(1, 0, 0, ContentLabel.TextBounds.Y + 35)
+                end)
 
-				local ParagraphFunction = {}
-				function ParagraphFunction:Set(ToChange)
-					ParagraphFrame.Content.Text = ToChange
-				end
+                ContentLabel.Text = Content
+
+                local ParagraphFunction = {}
+                function ParagraphFunction:Set(ToChange)
+                    ContentLabel.Text = ToChange
+                end
+			
 				return ParagraphFunction
 			end    
 			function ElementFunction:AddButton(ButtonConfig)
